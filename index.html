@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MOTION LAB — Class 9 Physics Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <button id="menuToggle" class="icon-btn" aria-label="Toggle navigation">
+    <svg width="22" height="22" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <div class="brand">
+    <span class="brand-mark">⌁</span>
+    <div class="brand-text">
+      <span class="brand-title">MOTION LAB</span>
+      <span class="brand-sub">Class 9 Physics Console · Ch.1 Motion + NCERT Ch.4</span>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" class="search-icon"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="globalSearch" type="text" placeholder="Search any topic, formula, term…" autocomplete="off">
+    <div id="searchResults" class="search-results"></div>
+  </div>
+
+  <div class="topbar-right">
+    <div class="progress-pill" id="progressPill" title="Topics learned">
+      <svg width="34" height="34" viewBox="0 0 36 36" class="ring">
+        <circle cx="18" cy="18" r="15.5" class="ring-bg"/>
+        <circle cx="18" cy="18" r="15.5" class="ring-fg" id="ringFg"/>
+      </svg>
+      <span id="progressLabel">0%</span>
+    </div>
+    <button id="themeToggle" class="icon-btn" title="Toggle light / dark mode">
+      <svg id="iconMoon" width="20" height="20" viewBox="0 0 24 24"><path d="M21 12.5A8.5 8.5 0 1 1 11.5 3 7 7 0 0 0 21 12.5Z" fill="currentColor"/></svg>
+      <svg id="iconSun" width="20" height="20" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></g></svg>
+    </button>
+  </div>
+</header>
+
+<div class="app-shell">
+  <!-- ============ SIDEBAR ============ -->
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-group-label">Console</div>
+    <button class="nav-link active" data-section="home">
+      <span class="nav-ico">◈</span> Home / Live Console
+    </button>
+    <button class="nav-link" data-section="topics">
+      <span class="nav-ico">▤</span> Topic Notes <span class="nav-count">32</span>
+    </button>
+    <button class="nav-link" data-section="graphs">
+      <span class="nav-ico">⟋</span> Graph Lab
+    </button>
+    <button class="nav-link" data-section="formulas">
+      <span class="nav-ico">∑</span> Formula Flashcards
+    </button>
+
+    <div class="nav-group-label">Question Bank</div>
+    <button class="nav-link" data-section="qbank" data-tab="mcq">
+      <span class="nav-ico">A</span> MCQs
+    </button>
+    <button class="nav-link" data-section="qbank" data-tab="ar">
+      <span class="nav-ico">⊢</span> Assertion–Reason
+    </button>
+    <button class="nav-link" data-section="qbank" data-tab="vsq">
+      <span class="nav-ico">¹</span> Very Short
+    </button>
+    <button class="nav-link" data-section="qbank" data-tab="sq">
+      <span class="nav-ico">²</span> Short Answer
+    </button>
+    <button class="nav-link" data-section="qbank" data-tab="lq">
+      <span class="nav-ico">³</span> Long Answer
+    </button>
+    <button class="nav-link" data-section="qbank" data-tab="hots">
+      <span class="nav-ico">✦</span> HOTS
+    </button>
+    <button class="nav-link" data-section="qbank" data-tab="case">
+      <span class="nav-ico">▦</span> Case Studies
+    </button>
+    <button class="nav-link" data-section="qbank" data-tab="num">
+      <span class="nav-ico">#</span> Numericals
+    </button>
+
+    <div class="nav-group-label">Practice</div>
+    <button class="nav-link" data-section="quiz">
+      <span class="nav-ico">▶</span> Quiz Mode
+    </button>
+    <button class="nav-link" data-section="exam">
+      <span class="nav-ico">⏱</span> Exam Mode
+    </button>
+    <button class="nav-link" data-section="bookmarks">
+      <span class="nav-ico">★</span> Bookmarks <span class="nav-count" id="bmCount">0</span>
+    </button>
+
+    <div class="sidebar-foot">
+      <div class="foot-note">Session progress is stored in memory for this visit.</div>
+    </div>
+  </nav>
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main" id="main">
+
+    <!-- ===================== HOME ===================== -->
+    <section class="screen active" id="screen-home">
+      <div class="hero">
+        <div class="hero-text">
+          <span class="eyebrow">Live Motion Console · drag the slider, watch the physics</span>
+          <h1>Motion isn't a definition.<br>It's a <span class="grad">number that keeps changing.</span></h1>
+          <p>This console is a real, ticking simulation — not a picture of one. Pick a mode below and watch position <code>s</code>, velocity <code>v</code> and acceleration <code>a</code> update live, exactly the way they would in your notebook's graphs.</p>
+          <div class="hero-modes">
+            <button class="mode-btn active" data-mode="uniform">Uniform Motion</button>
+            <button class="mode-btn" data-mode="accel">Accelerating</button>
+            <button class="mode-btn" data-mode="decel">Decelerating (Retardation)</button>
+            <button class="mode-btn" data-mode="circular">Uniform Circular Motion</button>
+          </div>
+          <div class="hero-actions">
+            <button id="heroPlay" class="btn-primary">⏸ Pause</button>
+            <button id="heroReset" class="btn-ghost">Reset</button>
+          </div>
+        </div>
+        <div class="hero-console glass">
+          <canvas id="heroCanvas" width="560" height="230"></canvas>
+          <div class="readout-row">
+            <div class="readout"><span class="r-label">position s</span><span class="r-val mono" id="roS">0.0 m</span></div>
+            <div class="readout"><span class="r-label">velocity v</span><span class="r-val mono" id="roV">0.0 m/s</span></div>
+            <div class="readout"><span class="r-label">accel a</span><span class="r-val mono" id="roA">0.0 m/s²</span></div>
+            <div class="readout"><span class="r-label">time t</span><span class="r-val mono" id="roT">0.0 s</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="home-grid">
+        <div class="glass info-card">
+          <h3>What's inside this console</h3>
+          <ul class="check-list">
+            <li>32 fully worked topic notes — S.Chand Ch.1 <em>Motion</em> + NCERT Ch.4 <em>Describing Motion Around Us</em>, no topic skipped.</li>
+            <li>4 interactive canvas-driven graph simulators with sliders for u, a, t.</li>
+            <li>A 200+ question bank: MCQ, Assertion–Reason, Short/Long Answer, HOTS, Case Studies, Numericals — every answer fully worked.</li>
+            <li>Timed Quiz Mode and a full Exam Mode mock test with scoring.</li>
+            <li>Flip-card formula deck, bookmarking, and a live topic-progress ring.</li>
+          </ul>
+        </div>
+        <div class="glass info-card">
+          <h3>How to use this, step by step</h3>
+          <ol class="step-list">
+            <li>Start in <strong>Topic Notes</strong> and tick off each card as "Learned" — the ring at the top fills up.</li>
+            <li>Open <strong>Graph Lab</strong> and physically drag the sliders until slope and area "click" intuitively.</li>
+            <li>Drill the <strong>Formula Flashcards</strong> until you can flip and recall instantly.</li>
+            <li>Hit <strong>Quiz Mode</strong> daily, then attempt a full <strong>Exam Mode</strong> test the night before your test.</li>
+          </ol>
+        </div>
+        <div class="glass info-card highlight-card">
+          <h3>Today's exam-board reminder</h3>
+          <p id="dailyTip">Loading tip…</p>
+          <button class="btn-ghost small" id="newTipBtn">Show another tip ↻</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== TOPICS ===================== -->
+    <section class="screen" id="screen-topics">
+      <div class="screen-head">
+        <div>
+          <h2>Topic Notes</h2>
+          <p class="muted">S.Chand Chapter 1: Motion &nbsp;+&nbsp; NCERT Chapter 4: Describing Motion Around Us — every concept, in full.</p>
+        </div>
+        <div class="filter-row">
+          <input id="topicSearch" type="text" placeholder="Filter topics…">
+          <select id="topicFilter">
+            <option value="all">All chapters</option>
+            <option value="1">S.Chand Ch.1 — Motion</option>
+            <option value="4">NCERT Ch.4 — Describing Motion</option>
+          </select>
+        </div>
+      </div>
+      <div id="topicGrid" class="topic-grid"></div>
+    </section>
+
+    <!-- ===================== GRAPH LAB ===================== -->
+    <section class="screen" id="screen-graphs">
+      <div class="screen-head">
+        <div><h2>Graph Lab</h2><p class="muted">Slope = rate of change. Area = total accumulated. Everything else is decoration.</p></div>
+      </div>
+
+      <div class="graph-grid">
+        <div class="glass graph-card">
+          <h3>1 · Position–Time Graph</h3>
+          <p class="muted small">Toggle between uniform and non-uniform motion. Slope of this line = velocity.</p>
+          <canvas id="cvPosTime" width="480" height="260"></canvas>
+          <div class="graph-controls">
+            <button class="chip active" data-pt="uniform">Uniform</button>
+            <button class="chip" data-pt="nonuniform">Non-Uniform</button>
+            <button class="chip" data-pt="rest">At Rest</button>
+          </div>
+          <div class="graph-readout mono" id="ptReadout">slope (velocity) = 20.0 m/s</div>
+        </div>
+
+        <div class="glass graph-card">
+          <h3>2 · Velocity–Time Graph</h3>
+          <p class="muted small">Slope of this line = acceleration. Shaded area = displacement.</p>
+          <canvas id="cvVelTime" width="480" height="260"></canvas>
+          <div class="graph-controls">
+            <button class="chip active" data-vt="const">Constant v (a=0)</button>
+            <button class="chip" data-vt="up">Speeding up</button>
+            <button class="chip" data-vt="down">Slowing down</button>
+          </div>
+          <div class="graph-readout mono" id="vtReadout">slope (a) = 0 m/s² &nbsp;|&nbsp; area (s) = 0 m</div>
+        </div>
+
+        <div class="glass graph-card">
+          <h3>3 · Uniform Circular Motion</h3>
+          <p class="muted small">Speed is constant, but watch the velocity arrow — its direction never stops changing. That's acceleration.</p>
+          <canvas id="cvCircular" width="480" height="260"></canvas>
+          <div class="graph-readout mono" id="circReadout">speed = constant &nbsp;|&nbsp; direction of v = changing every instant</div>
+        </div>
+
+        <div class="glass graph-card">
+          <h3>4 · Equation Plotter (live)</h3>
+          <p class="muted small">Drag u, a, t and watch v = u+at and s = ut+½at² update — and the v–t graph redraw itself.</p>
+          <canvas id="cvPlotter" width="480" height="220"></canvas>
+          <div class="sliders">
+            <label>u (m/s) <input type="range" id="slU" min="-5" max="20" value="5" step="0.5"><span id="slUVal" class="mono">5.0</span></label>
+            <label>a (m/s²) <input type="range" id="slA" min="-5" max="5" value="1" step="0.5"><span id="slAVal" class="mono">1.0</span></label>
+            <label>t (s) <input type="range" id="slT" min="1" max="20" value="10" step="1"><span id="slTVal" class="mono">10</span></label>
+          </div>
+          <div class="graph-readout mono" id="plotReadout">v = 15.0 m/s &nbsp;|&nbsp; s = 100.0 m</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FORMULAS ===================== -->
+    <section class="screen" id="screen-formulas">
+      <div class="screen-head">
+        <div><h2>Formula Flashcards</h2><p class="muted">Click a card to flip it. Try to say the formula out loud before you flip.</p></div>
+        <button class="btn-ghost" id="shuffleFormulas">Shuffle ↻</button>
+      </div>
+      <div id="formulaGrid" class="formula-grid"></div>
+    </section>
+
+    <!-- ===================== QUESTION BANK ===================== -->
+    <section class="screen" id="screen-qbank">
+      <div class="screen-head">
+        <div><h2>Question Bank</h2><p class="muted">Every question is fully worked — answer, explanation, and steps included.</p></div>
+      </div>
+      <div class="qbank-tabs" id="qbankTabs">
+        <button class="qtab active" data-tab="mcq">MCQ <span class="nav-count" id="cnt-mcq"></span></button>
+        <button class="qtab" data-tab="ar">Assertion–Reason <span class="nav-count" id="cnt-ar"></span></button>
+        <button class="qtab" data-tab="vsq">Very Short <span class="nav-count" id="cnt-vsq"></span></button>
+        <button class="qtab" data-tab="sq">Short Answer <span class="nav-count" id="cnt-sq"></span></button>
+        <button class="qtab" data-tab="lq">Long Answer <span class="nav-count" id="cnt-lq"></span></button>
+        <button class="qtab" data-tab="hots">HOTS <span class="nav-count" id="cnt-hots"></span></button>
+        <button class="qtab" data-tab="case">Case Study <span class="nav-count" id="cnt-case"></span></button>
+        <button class="qtab" data-tab="num">Numericals <span class="nav-count" id="cnt-num"></span></button>
+      </div>
+      <div id="qbankBody"></div>
+    </section>
+
+    <!-- ===================== QUIZ MODE ===================== -->
+    <section class="screen" id="screen-quiz">
+      <div class="screen-head"><div><h2>Quiz Mode</h2><p class="muted">Random questions, instant scoring, full review at the end.</p></div></div>
+
+      <div id="quizSetup" class="glass quiz-setup">
+        <div class="setup-row">
+          <label>Category
+            <select id="quizCategory">
+              <option value="mixed">Mixed (all types)</option>
+              <option value="mcq">MCQ only</option>
+              <option value="ar">Assertion–Reason only</option>
+              <option value="num">Numericals only</option>
+            </select>
+          </label>
+          <label>Number of questions
+            <select id="quizCount">
+              <option>5</option><option selected>10</option><option>15</option><option>20</option>
+            </select>
+          </label>
+          <label>Per-question timer
+            <select id="quizTimer">
+              <option value="0">No limit</option>
+              <option value="30">30 sec</option>
+              <option value="60" selected>60 sec</option>
+              <option value="90">90 sec</option>
+            </select>
+          </label>
+        </div>
+        <button class="btn-primary" id="startQuizBtn">Start Quiz ▶</button>
+      </div>
+
+      <div id="quizRunning" class="quiz-running" style="display:none">
+        <div class="quiz-bar">
+          <span id="quizProgressText" class="mono">Q1 / 10</span>
+          <span id="quizTimerText" class="mono timer-text">⏱ 60s</span>
+          <span id="quizScoreText" class="mono">Score: 0</span>
+        </div>
+        <div class="glass quiz-card" id="quizCardBody"></div>
+        <div class="quiz-nav">
+          <button class="btn-ghost" id="quizSkip">Skip ▶</button>
+          <button class="btn-ghost" id="quizBookmarkBtn">★ Bookmark this</button>
+          <button class="btn-primary" id="quizQuit">Quit Quiz</button>
+        </div>
+      </div>
+
+      <div id="quizResult" class="glass quiz-result" style="display:none"></div>
+    </section>
+
+    <!-- ===================== EXAM MODE ===================== -->
+    <section class="screen" id="screen-exam">
+      <div class="screen-head"><div><h2>Exam Mode</h2><p class="muted">One fixed mock test. One clock. No pausing. Just like the real thing.</p></div></div>
+
+      <div id="examSetup" class="glass quiz-setup">
+        <p>This mock test contains <strong>10 MCQs, 5 Assertion–Reason, 5 Numericals and 5 Short Answers</strong> (25 total) under a single countdown timer.</p>
+        <div class="setup-row">
+          <label>Duration
+            <select id="examDuration">
+              <option value="600">10 minutes</option>
+              <option value="900" selected>15 minutes</option>
+              <option value="1800">30 minutes</option>
+            </select>
+          </label>
+        </div>
+        <button class="btn-primary" id="startExamBtn">Begin Exam ▶</button>
+      </div>
+
+      <div id="examRunning" style="display:none">
+        <div class="exam-clock-bar glass">
+          <span class="mono" id="examClock">15:00</span>
+          <span class="mono" id="examProgress">Answered: 0 / 25</span>
+          <button class="btn-primary small" id="submitExamBtn">Submit Exam</button>
+        </div>
+        <div id="examQuestions" class="exam-questions"></div>
+      </div>
+
+      <div id="examResult" class="glass quiz-result" style="display:none"></div>
+    </section>
+
+    <!-- ===================== BOOKMARKS ===================== -->
+    <section class="screen" id="screen-bookmarks">
+      <div class="screen-head"><div><h2>Bookmarks &amp; Revision Mode</h2><p class="muted">Everything you starred, in one flip-through deck.</p></div></div>
+      <div id="bookmarkList" class="bookmark-list"></div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
